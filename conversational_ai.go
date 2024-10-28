@@ -98,10 +98,10 @@ func (c *Conversation) StartSession() error {
 	}
 	c.wsClient.SetDebug(c.IsDebug())
 	c.wsClient.SetDebugFunctions([]string{
-		// "connect",
-		// "close",
-		"send",
-		"receive",
+		"connect",
+		"close",
+		// "send",
+		// "receive",
 	})
 
 	// Start message processing

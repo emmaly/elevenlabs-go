@@ -1,3 +1,33 @@
+/**
+ * @file agent.go
+ * @brief This file contains an example implementation of an audio interface and agent for handling audio input/output and interacting with the ElevenLabs API.
+ *
+ * The AudioInterface struct provides methods to initialize, start, stop, and manage audio devices for capturing and playing audio. It also includes functionality for handling silence and audio levels.
+ *
+ * The Agent struct manages the interaction with the ElevenLabs API, including starting and stopping conversations, handling user and agent responses, and managing debug logging.
+ *
+ * The main function initializes the agent, sets up signal handlers for graceful shutdown, and starts the conversation with the ElevenLabs API.
+ *
+ * Dependencies:
+ * - github.com/gen2brain/malgo: For audio device interface.
+ * - github.com/haguro/elevenlabs-go: For interacting with the ElevenLabs API.
+ * - github.com/joho/godotenv/autoload: For loading environment variables from a .env file.
+ *
+ * Environment Variables:
+ * - ELEVENLABS_API_KEY: API key for accessing the ElevenLabs API.
+ * - ELEVENLABS_AGENT_ID: Agent ID for starting a conversation with the ElevenLabs API.
+ * - Note: if an `.env` file exists in the current directory, it will read the variables into the environment from there.
+ *
+ * Usage:
+ * - Set the required environment variables.
+ * - Run the program to start the agent and handle audio input/output.
+ * - Use Ctrl+C to gracefully shut down the application.
+ * - Use Ctrl+\ to force quit the application.
+ *
+ * Debugging:
+ * - Debug logging can be enabled/disabled using the SetDebug method.
+ * - Specific functions can be targeted for debug logging using the SetDebugFunctions method.
+ */
 package main
 
 import (
@@ -299,7 +329,7 @@ func (a *AudioInterface) Start(agentOutputAudioFormat string, callback func([]by
 
 			// Debug output less frequently
 			if toCopy > 0 && a.outputIndex%1024 == 0 {
-				fmt.Printf("Played %d/%d bytes of audio\n", a.outputIndex, len(a.outputData))
+				a.debugLogf("AudioReceive", "Played %d/%d bytes of audio\n", a.outputIndex, len(a.outputData))
 			}
 		},
 	})
@@ -490,7 +520,7 @@ func main() {
 	agent.SetDebug(true)
 	agent.SetDebugFunctions([]string{
 		"noop",
-		"Run",
+		// "Run",
 	})
 	agent.Run()
 }
@@ -523,7 +553,7 @@ func (a *Agent) Run() {
 	a.audioIF.SetDebug(a.debugLog)
 	a.audioIF.SetDebugFunctions([]string{
 		// "Init",
-		"Start",
+		// "Start",
 		// "Stop",
 		// "Output",
 		// "Interrupt",
@@ -569,12 +599,12 @@ func (a *Agent) Run() {
 		"StartSession",
 		"EndSession",
 		"InputCallback",
-		"ConversationID",
+		// "ConversationID",
 		"processMessages",
 		"handleMessage",
-		"handlePing",
-		"getWsURL",
-		"getSignedURL",
+		// "handlePing",
+		// "getWsURL",
+		// "getSignedURL",
 	})
 
 	a.debugLogf("Run", "Initializing conversation session...")
