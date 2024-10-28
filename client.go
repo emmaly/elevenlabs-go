@@ -19,6 +19,8 @@ const (
 	elevenlabsBaseURL = "https://api.elevenlabs.io/v1"
 	defaultTimeout    = 30 * time.Second
 	contentTypeJSON   = "application/json"
+
+	elevenlabsWSBaseURL = "wss://api.elevenlabs.io/v1"
 )
 
 var (
@@ -84,6 +86,7 @@ func NewClient(ctx context.Context, apiKey string, reqTimeout time.Duration) *Cl
 func (c *Client) doRequest(ctx context.Context, RespBodyWriter io.Writer, method, url string, bodyBuf io.Reader, contentType string, queries ...QueryFunc) error {
 	timeoutCtx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
+
 	req, err := http.NewRequestWithContext(timeoutCtx, method, url, bodyBuf)
 	if err != nil {
 		return err
